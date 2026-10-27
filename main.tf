@@ -9,5 +9,15 @@ resource "azuread_application_permission_scope" "application_permission_scopes" 
   type                       = each.value.type
   user_consent_description   = each.value.user_consent_description
   user_consent_display_name  = each.value.user_consent_display_name
+
+  dynamic "timeouts" {
+    for_each = each.value.timeouts != null ? [each.value.timeouts] : []
+    content {
+      create = timeouts.value.create
+      delete = timeouts.value.delete
+      read   = timeouts.value.read
+      update = timeouts.value.update
+    }
+  }
 }
 
